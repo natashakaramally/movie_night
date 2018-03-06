@@ -63,6 +63,9 @@
     </a>
 
     <h2>Reviews</h2>
+      <p>
+        <% for review in Review.find_by (id: movie_id) ('created_at desc') %>
+      </p>
     <hr>
 
 
