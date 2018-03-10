@@ -63,8 +63,39 @@
     </a>
 
     <h2>Reviews</h2>
-      <p>
-        <% for review in Review.find_by (id: movie_id) ('created_at desc') %>
+      <p> Write a Review for <%= movie.title %>: </p>
+      <%= form_tag "/reviews", class: 'col-sm-4' do %>
+
+        <input type="hidden" name="movie_id" value="<%= movie.id %>">
+
+        <p>Rating:
+            <select name="rating" class="form-control" required>
+              <option value="">Please Select...</option>
+              <option value="1">&#9733;</option>
+              <option value="2">&#9733; &#9733;</option>
+              <option value="3">&#9733; &#9733; &#9733; </option>
+              <option value="4">&#9733; &#9733; &#9733; &#9733; </option>
+              <option value="5">&#9733; &#9733; &#9733; &#9733; &#9733;</option>
+            </select>
+        </p>
+
+        <p>Your Review:
+          <textarea class="form-control" cols="40" rows="3" name="content">
+          </textarea>
+        </p>
+
+        <button class="btn btn-success">Submit Review</button>
+        or <%= link_to "Cancel", "/movies/#{movie_id}" %>
+      <% end %>
+        <% review = Review.find_by(movie_id: params[:id]) %>
+        <% if review != nil %>
+        <h3>
+           <%= stars = review.rating %>
+        </h3>
+        <p>
+          <%= review.content %>
+        </p>
+        <% end %>
       </p>
     <hr>
 

@@ -19,10 +19,11 @@ class ReviewsController < ApplicationController
   def create
     review = Review.new
     review.movie_id = params["movie_id"]
+    x = params["movie_id"]
     review.rating = params["rating"]
     review.content = params["content"]
     review.save
-    redirect_to "/reviews"
+    redirect_to "/movies/#{x}"
   end
 
   def edit
