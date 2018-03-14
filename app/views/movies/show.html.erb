@@ -7,6 +7,11 @@
     <h2>
       <%= movie.title %>
     </h2>
+      <h5>
+      <% if review =! nil %>
+      <%= average_rating = Review.where(movie_id: movie.id).average(:Rating).round(1) %> out of 5 stars
+      <% end %>
+    </h5>
   </div>
 
 </div>
@@ -64,7 +69,7 @@
 
     <h2>Reviews</h2>
       <p> Write a Review for <%= movie.title %>: </p>
-      <%= form_tag "/reviews", class: 'col-sm-4' do %>
+      <%= form_tag "/reviews", class: 'row-mt-3' do %>
 
         <input type="hidden" name="movie_id" value="<%= movie.id %>">
 
@@ -80,28 +85,48 @@
         </p>
 
         <p>Your Review:
-          <textarea class="form-control" cols="40" rows="3" name="content">
-          </textarea>
+          <textarea class="form-control" cols="40" rows="3" name="content"></textarea>
         </p>
 
         <button class="btn btn-success">Submit Review</button>
         or <%= link_to "Cancel", "/movies/#{movie_id}" %>
       <% end %>
-        <% review = Review.find_by(movie_id: params[:id]) %>
-        <% if review != nil %>
-        <h3>
-           <%= stars = review.rating %>
-        </h3>
-        <p>
-          <%= review.content %>
-        </p>
-        <% end %>
-      </p>
       <p>
+        <% review = Review.find_by(movie_id: movie.id) %>
         <% if review == nil %>
         <h3>Be the first to write a review!</h3>
+      </p>
+        <% else %>
+      <% for review in Review.where(movie_id: movie.id).order('created_at desc')%>
+        <% movie = Movie.find_by(id: review.movie_id) %>
+
+
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">
+
+                  <% review.rating.times do %> &#9733;
+                  <% end %>
+                  <p>
+                    <%#= review.updated_at.strftime("%B %d, %Y %l:%M %P") %>
+                    <%= time_ago_in_words(review.updated_at) %> ago.
+                  </p>
+
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    <%= movie.title %>
+                  </h6>
+                </h5>
+                <p class="card-text">
+                  <%= review.content %>
+                </p>
+              </div>
+            </div>
         <% end %>
       </p>
+
+      <%end%>
     <hr>
 
 
