@@ -9,7 +9,7 @@
     </h2>
       <% review = Review.find_by(movie_id: movie.id) %>
       <% if review != nil %>
-      <h5>Average rating: <%= Review.where(movie_id: movie.id).average(:Rating).round(1)%> out of 5 stars</h5>
+      <h5>Average rating: <%= Review.where(movie_id: movie.id).average(:Rating).round(1)%> &#9733; out of 5</h5>
       <% else %>
       <h5>No reviews yet!</h5>
       <% end %>
